@@ -1,0 +1,35 @@
+---
+layout: default
+---
+{%- assign coll = site.collections | where: "label", page.collection | first -%}
+{%- assign docs = site[page.collection] | sort: "order" -%}
+{%- for d in docs -%}{%- if d.url == page.url -%}{%- assign idx = forloop.index0 -%}{%- endif -%}{%- endfor -%}
+{%- assign prev = false -%}{%- assign next = false -%}
+{%- if idx > 0 -%}{%- assign pi = idx | minus: 1 -%}{%- assign prev = docs[pi] -%}{%- endif -%}
+{%- assign ni = idx | plus: 1 -%}{%- assign next = docs[ni] -%}
+{%- assign coll_url = '/' | append: page.collection | append: '/' | relative_url -%}
+<main class="wrap">
+  <header class="story-head">
+    <a class="eyebrow" href="{{ coll_url }}">{{ coll.title }}</a>
+    <h1>{{ page.title }}</h1>
+  </header>
+
+  <article class="story">
+    {% include plate.html doc=page %}
+    {{ content }}
+  </article>
+
+  <span class="ornament story-end" aria-hidden="true"></span>
+
+  <nav class="story-nav" aria-label="More stories">
+    {%- if prev %}
+    <a class="prev" href="{{ prev.url | relative_url }}"><small>← Previous</small><span>{{ prev.title }}</span></a>
+    {%- endif %}
+    {%- if next %}
+    <a class="next" href="{{ next.url | relative_url }}"><small>Next →</small><span>{{ next.title }}</span></a>
+    {%- else %}
+    <a class="next" href="{{ coll_url }}"><small>That’s all for now</small><span>More stories soon</span></a>
+    {%- endif %}
+  </nav>
+  <p class="back-to-contents"><a href="{{ coll_url }}">All {{ coll.title }}</a></p>
+</main>

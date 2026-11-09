@@ -1,0 +1,19 @@
+{%- comment -%}
+  The first one or two sentences of a story, for the contents page.
+  If a story has "opening:" in its front matter, that text is used instead.
+{%- endcomment -%}
+{%- if include.doc.opening -%}
+{{ include.doc.opening }}
+{%- else -%}
+{%- assign para = include.doc.content | strip_html | strip | newline_to_br | split: '<br />' | first | strip -%}
+{%- assign sents = para | split: '. ' -%}
+{%- assign out = sents[0] -%}
+{%- if sents.size > 1 -%}
+  {%- assign two = sents[0] | append: '. ' | append: sents[1] -%}
+  {%- assign n = two | number_of_words -%}
+  {%- if n <= 45 -%}{%- assign out = two -%}{%- endif -%}
+  {%- assign last = out | slice: -1 -%}
+  {%- unless last == '.' or last == '?' or last == '!' or last == '…' or last == '’' -%}{%- assign out = out | append: '.' -%}{%- endunless -%}
+{%- endif -%}
+{{ out }}
+{%- endif -%}

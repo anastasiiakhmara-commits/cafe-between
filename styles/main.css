@@ -1,0 +1,458 @@
+/* =====================================================================
+   THE CAFE BETWEEN — the one stylesheet
+   Every page on the site uses this file. Change something here and it
+   changes everywhere. Story pages contain only text; all looks live here.
+
+   Sections:
+     1. Fonts            – which typefaces load
+     2. Palette          – all colours, light + dark mode
+     3. Type scale       – sizes, line length, spacing
+     4. Page frame       – background, header bar, footer
+     5. Story text       – paragraphs, drop cap, scene breaks
+     6. Plates           – how illustrations sit in the text
+     7. Landing page     – title, preview card, collections
+     8. Contents list    – collection pages
+     9. Prev / next nav
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1. FONTS
+   Titles: IM Fell English — digitised from 17th-century Fell types.
+   Body:   Alegreya — a literary book face, sturdy on a phone.
+   To try another pairing, swap the @import line AND the two
+   --font-… lines in section 3. Two alternatives, ready to paste:
+
+   A) Elegant, thin, very bookish:
+   @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap");
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-body:    "EB Garamond", Georgia, serif;
+
+   B) Softer, more contemporary storybook:
+   @import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Literata:ital,opsz,wght@0,7..72,400;1,7..72,400&display=swap");
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body:    "Literata", Georgia, serif;
+   --------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;1,400&family=Alegreya+SC:wght@500&family=IM+Fell+English:ital@0;1&display=swap");
+
+
+/* ---------------------------------------------------------------------
+   2. PALETTE  (first try — replace the hex values with your own)
+   The site follows the reader's phone setting; the moon/sun button in
+   the header lets them switch.
+   --------------------------------------------------------------------- */
+:root {
+  --paper:       #EEE8D3;  /* page background: unbleached sketchbook paper */
+  --paper-deep:  #E4DAC0;  /* card fills */
+  --ink:         #2A2A1E;  /* body text: warm near-black, slightly green */
+  --ink-soft:    #5C5743;  /* hooks, meta */
+  --forest:      #2F4B34;  /* links, titles */
+  --moss:        #6E7342;  /* small labels */
+  --gold:        #A47D2C;  /* ornaments, drop caps, rules — decoration only */
+  --bark:        #6B4A2B;  /* plate frames */
+  --header-bg:   #2F4B34;  /* the dark green bar at the top */
+  --header-ink:  #EEE8D3;  /* icons on the bar */
+  --plate-paper: #F2ECDA;  /* the mat behind illustrations — stays light in dark mode, like a real page */
+  --plate-ink:   #4A4231;  /* captions on that mat */
+  --grain:       0.06;     /* paper texture strength (0 = off) */
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:       #151B15;
+    --paper-deep:  #1D251D;
+    --ink:         #E3D9BF;
+    --ink-soft:    #ADA488;
+    --forest:      #A9C59A;
+    --moss:        #9CA46A;
+    --gold:        #CFA651;
+    --bark:        #8D6A45;
+    --header-bg:   #213424;
+    --header-ink:  #E3D9BF;
+    --plate-paper: #E6DEC6;
+    --plate-ink:   #4A4231;
+    --grain:       0.05;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:       #151B15;
+  --paper-deep:  #1D251D;
+  --ink:         #E3D9BF;
+  --ink-soft:    #ADA488;
+  --forest:      #A9C59A;
+  --moss:        #9CA46A;
+  --gold:        #CFA651;
+  --bark:        #8D6A45;
+  --header-bg:   #213424;
+  --header-ink:  #E3D9BF;
+  --plate-paper: #E6DEC6;
+  --plate-ink:   #4A4231;
+  --grain:       0.05;
+  color-scheme: dark;
+}
+
+
+/* ---------------------------------------------------------------------
+   3. TYPE SCALE
+   --------------------------------------------------------------------- */
+:root {
+  --font-display: "IM Fell English", "Iowan Old Style", Georgia, serif;
+  --font-body:    "Alegreya", "Iowan Old Style", Georgia, serif;
+  --font-label:   "Alegreya SC", "Alegreya", Georgia, serif;
+
+  --text:    clamp(1.125rem, 1rem + 0.5vw, 1.3rem);  /* body: ~18px phone → ~21px desktop */
+  --small:   0.9rem;
+  --h-story: clamp(2.4rem, 1.6rem + 3.5vw, 3.6rem);  /* story title */
+  --h-site:  clamp(2.8rem, 1.6rem + 5.5vw, 5rem);    /* site name on landing */
+  --measure: 33rem;   /* line length of story text (~65 characters) */
+  --wide:    46rem;   /* header bar, landing preview card */
+  --leading: 1.62;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+}
+
+
+/* ---------------------------------------------------------------------
+   4. PAGE FRAME
+   --------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--text);
+  line-height: var(--leading);
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  overflow-x: hidden;
+}
+
+/* Paper grain: a faint noise texture laid over everything */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.45  0 0 0 0 0.3  0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  z-index: 50;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--forest); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { color: var(--gold); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+
+/* Every content column keeps a 16px side gutter on phones */
+.wrap {
+  max-width: calc(var(--measure) + 32px);
+  margin-inline: auto;
+  padding-left: var(--gutter-l);
+  padding-right: var(--gutter-r);
+}
+.wrap--wide { max-width: calc(var(--wide) + 32px); }
+
+/* Header bar — dark green, full width. Future links (About, other
+   collections) go inside <nav class="bar-links">, next to the home icon. */
+.site-header { background: var(--header-bg); color: var(--header-ink); }
+.site-header .bar {
+  max-width: calc(var(--wide) + 32px);
+  margin: 0 auto;
+  padding: 0.55rem var(--gutter-r) 0.55rem var(--gutter-l);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.bar-links { display: flex; align-items: center; gap: 1.2rem; }
+.bar-links a, .theme-toggle {
+  color: var(--header-ink);
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  text-decoration: none;
+}
+.bar-links a:hover, .theme-toggle:hover { color: var(--gold); background: color-mix(in srgb, var(--header-ink) 10%, transparent); }
+.bar-links svg, .theme-toggle svg { width: 1.4rem; height: 1.4rem; }
+.theme-toggle { font: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+
+.site-footer {
+  max-width: calc(var(--measure) + 32px);
+  margin: 5rem auto 0;
+  padding: 2rem var(--gutter-r) 3rem var(--gutter-l);
+  text-align: center;
+  font-size: var(--small);
+  color: var(--ink-soft);
+}
+/* Later: the "leave a coin in the bowl" link goes inside .site-footer */
+
+/* Ornament: a small sprig drawn in gold. Used as a divider. */
+.ornament {
+  display: block;
+  width: 7rem;
+  height: 1.1rem;
+  margin: 2.5rem auto;
+  background: var(--gold);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 22'%3E%3Cpath d='M0 11h52M88 11h52' stroke='black' stroke-width='1'/%3E%3Cpath d='M70 3c5 4 5 12 0 16c-5-4-5-12 0-16z' fill='black'/%3E%3Cpath d='M70 11c-6-5-12-6-16-3c4 4 10 4 16 3zM70 11c6-5 12-6 16-3c-4 4-10 4-16 3z' fill='black'/%3E%3Ccircle cx='46' cy='11' r='1.6'/%3E%3Ccircle cx='94' cy='11' r='1.6'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 22'%3E%3Cpath d='M0 11h52M88 11h52' stroke='black' stroke-width='1'/%3E%3Cpath d='M70 3c5 4 5 12 0 16c-5-4-5-12 0-16z' fill='black'/%3E%3Cpath d='M70 11c-6-5-12-6-16-3c4 4 10 4 16 3zM70 11c6-5 12-6 16-3c-4 4-10 4-16 3z' fill='black'/%3E%3Ccircle cx='46' cy='11' r='1.6'/%3E%3Ccircle cx='94' cy='11' r='1.6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.eyebrow {
+  font-family: var(--font-label);
+  font-size: var(--small);
+  letter-spacing: 0.12em;
+  color: var(--moss);
+  text-decoration: none;
+}
+
+
+/* ---------------------------------------------------------------------
+   5. STORY TEXT
+   Book-style paragraphs: indented, no gaps — the old-fashioned way.
+   --------------------------------------------------------------------- */
+.story-head { text-align: center; padding-block: 3rem 1.5rem; }
+.story-head h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--h-story);
+  line-height: 1.05;
+  color: var(--forest);
+  margin: 0.4rem 0 0;
+  text-wrap: balance;
+}
+
+.story p { margin: 0; text-indent: 1.4em; hyphens: auto; -webkit-hyphens: auto; }
+.story p:first-of-type,
+.story .scene-break + p { text-indent: 0; }
+
+/* Drop cap on the story's first letter */
+.story p:first-of-type::first-letter,
+.excerpt p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  float: left;
+  font-size: 3.9em;
+  line-height: 0.82;
+  padding: 0.06em 0.09em 0 0;
+  color: var(--gold);
+}
+
+/* A scene break inside a story: put <hr class="scene-break"> between paragraphs */
+.scene-break { border: 0; height: 1em; margin: 1.4em 0; text-align: center; color: var(--gold); }
+.scene-break::before { content: "⁂"; font-size: 1.1em; }
+
+.story::after { content: ""; display: block; clear: both; }
+.story-end { margin-top: 3rem; }
+
+
+/* ---------------------------------------------------------------------
+   6. PLATES — illustrations, set like tipped-in plates in an old book:
+   the drawing sits on a light paper mat inside a thin double frame.
+   Portrait format. Phone: centred above the text.
+   Laptop and wider: floats to the right beside the opening paragraphs,
+   hanging slightly out of the text column.
+   --------------------------------------------------------------------- */
+.plate {
+  margin: 0.5rem auto 2rem;
+  width: min(100%, 21rem);
+  padding: 0.8rem;
+  background: var(--plate-paper);
+  border: 1px solid color-mix(in srgb, var(--bark) 55%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--bark) 30%, transparent);
+  outline-offset: 4px;
+  box-shadow: 0 16px 30px -20px rgb(0 0 0 / 0.55);
+}
+/* multiply = the white paper of the scan takes on the mat's colour,
+   so the ink looks drawn on the mat itself */
+.plate img { width: 100%; mix-blend-mode: multiply; }
+.plate figcaption {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-style: italic;
+  font-size: var(--small);
+  color: var(--plate-ink);
+  text-indent: 0;
+}
+/* Placeholder shown until the real illustration is in /images */
+.plate-empty {
+  aspect-ratio: 3 / 4;
+  display: grid;
+  place-items: center;
+  border: 1px dashed color-mix(in srgb, var(--bark) 50%, transparent);
+  color: var(--plate-ink);
+  font-family: var(--font-label);
+  font-size: var(--small);
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 62rem) {
+  .story .plate {
+    float: right;
+    width: 17rem;
+    margin: 0.4rem -8.5rem 1.2rem 2rem;
+  }
+}
+
+
+/* ---------------------------------------------------------------------
+   7. LANDING PAGE
+   --------------------------------------------------------------------- */
+.masthead { text-align: center; padding-block: 4rem 0.5rem; }
+.masthead h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--h-site);
+  line-height: 1;
+  color: var(--forest);
+  margin: 0;
+  text-wrap: balance;
+}
+.tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3em;
+  color: var(--ink-soft);
+  max-width: 26rem;
+  margin: 1rem auto 0;
+  text-wrap: balance;
+}
+
+.section-label {
+  font-family: var(--font-label);
+  font-size: var(--small);
+  letter-spacing: 0.14em;
+  color: var(--moss);
+  text-align: center;
+  margin: 0 0 1.4rem;
+  font-weight: 500;
+}
+
+/* Preview card: the whole card is one link into the story */
+.preview-card {
+  display: grid;
+  gap: 1.6rem;
+  padding: 1.4rem;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--paper-deep);
+  border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  outline-offset: 5px;
+  margin: 6px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .preview-card { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+}
+.preview-card:hover {
+  color: var(--ink);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px -22px rgb(0 0 0 / 0.6);
+}
+.preview-card .plate { margin: 0 auto; width: min(100%, 15rem); }
+.preview-body { min-width: 0; display: flex; flex-direction: column; }
+.preview-body h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.3em;
+  line-height: 1.05;
+  color: var(--forest);
+  margin: 0.2rem 0 0.8rem;
+}
+/* the excerpt fades out at the bottom, to read as "to be continued" */
+.excerpt {
+  max-height: 13.5em;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+          mask-image: linear-gradient(to bottom, #000 60%, transparent);
+}
+.excerpt p { margin: 0; text-indent: 1.4em; }
+.excerpt p:first-of-type { text-indent: 0; }
+/* "Continue reading →" / "Full collection →": right-aligned, italic */
+.continue, .more {
+  align-self: flex-end;
+  text-align: right;
+  margin-top: 0.8rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.2em;
+  color: var(--forest);
+  text-decoration: none;
+}
+.preview-card:hover .continue, a.more:hover, .collection-link:hover .more { color: var(--gold); }
+
+/* Laptop and wider: illustration left, text right. The card is exactly
+   as tall as the illustration; the excerpt fills whatever space is left
+   and fades out, with "Continue reading" pinned to the bottom. */
+@media (min-width: 40rem) {
+  .preview-card { grid-template-columns: 14rem 1fr; align-items: stretch; padding: 1.8rem; }
+  .preview-card .plate { width: 100%; }
+  .preview-body { contain: size; }       /* text never makes the card taller */
+  .preview-body .excerpt { flex: 1 1 0; min-height: 0; max-height: none; }
+}
+
+/* Collection link on the landing page — the whole block is clickable */
+.collection-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+.collection-title { font-family: var(--font-display); font-size: 2.2em; line-height: 1.1; color: var(--forest); }
+.collection-sub { margin-top: 0.3rem; color: var(--ink-soft); font-style: italic; }
+.collection-link .more { align-self: center; }
+.collection-link:hover .collection-title { color: var(--gold); }
+
+
+/* ---------------------------------------------------------------------
+   8. CONTENTS LIST — collection pages
+   --------------------------------------------------------------------- */
+.contents { list-style: none; counter-reset: story; padding: 0; margin: 0; }
+.contents li {
+  counter-increment: story;
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  column-gap: 0.6rem;
+  padding-block: 1.1rem;
+  border-top: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+}
+.contents li:last-child { border-bottom: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); }
+/* Numbers come from the list order automatically — reorder the <li>s and they renumber */
+.contents li::before {
+  content: counter(story, upper-roman);
+  font-family: var(--font-display);
+  color: var(--gold);
+  font-size: 1.15em;
+  line-height: 1.5;
+}
+.contents .entry { min-width: 0; }
+.contents a.title { font-family: var(--font-display); font-size: 1.5em; line-height: 1.2; text-decoration: none; color: var(--forest); }
+.contents a.title:hover { color: var(--gold); }
+.contents .entry { display: flex; flex-direction: column; }
+.contents .opening { margin: 0.35rem 0 0; color: var(--ink-soft); }
+.contents .more { margin-top: 0.4rem; font-size: 1.05em; }
+
+.note { text-align: center; color: var(--ink-soft); font-style: italic; margin-top: 2rem; }
+
+
+/* ---------------------------------------------------------------------
+   9. PREV / NEXT
+   --------------------------------------------------------------------- */
+.story-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+.story-nav a { text-decoration: none; display: block; min-width: 0; }
+.story-nav .next { text-align: right; grid-column: 2; }
+.story-nav small { display: block; font-family: var(--font-label); letter-spacing: 0.1em; font-size: 0.8rem; color: var(--moss); }
+.story-nav span { font-family: var(--font-display); font-size: 1.3em; line-height: 1.2; }
+.back-to-contents { text-align: center; margin-top: 2rem; font-size: var(--small); }
+
+@media (prefers-reduced-motion: no-preference) {
+  a { transition: color 0.15s; }
+}

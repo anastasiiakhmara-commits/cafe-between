@@ -1,0 +1,27 @@
+---
+layout: default
+---
+{%- assign coll = site.collections | where: "label", page.stories | first -%}
+{%- assign docs = site[page.stories] | sort: "order" -%}
+<main class="wrap">
+  <header class="story-head">
+    <a class="eyebrow" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <h1>{{ coll.title }}</h1>
+    <p class="tagline">{{ coll.subtitle }}</p>
+  </header>
+
+  <ol class="contents">
+    {%- for d in docs %}
+    <li>
+      <div class="entry">
+        <a class="title" href="{{ d.url | relative_url }}">{{ d.title }}</a>
+        <p class="opening">{% include opening.html doc=d %}</p>
+        <a class="more" href="{{ d.url | relative_url }}" aria-label="Continue reading {{ d.title }}">Continue reading →</a>
+      </div>
+    </li>
+    {%- endfor %}
+  </ol>
+  {%- if coll.note %}
+  <p class="note">{{ coll.note }}</p>
+  {%- endif %}
+</main>

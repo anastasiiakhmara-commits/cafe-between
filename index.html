@@ -1,0 +1,46 @@
+---
+layout: default
+---
+{%- comment -%}
+  The landing page. The preview card shows the first story of October
+  (lowest "order"). To feature a different story, change "october" below
+  or pick another one from the list.
+{%- endcomment -%}
+{%- assign first = site.october | sort: "order" | first -%}
+{%- assign coll = site.collections | where: "label", "october" | first -%}
+{%- assign parts = first.content | split: '</p>' -%}
+<main>
+  <div class="wrap wrap--wide">
+    <header class="masthead">
+      <h1>{{ site.title }}</h1>
+      <p class="tagline">{{ site.description }}</p>
+    </header>
+    <span class="ornament" aria-hidden="true"></span>
+  </div>
+
+  <section class="wrap wrap--wide" aria-labelledby="begin">
+    <h2 class="section-label" id="begin">Start reading</h2>
+    <a class="preview-card" href="{{ first.url | relative_url }}">
+      {% include plate.html doc=first %}
+      <div class="preview-body">
+        <span class="eyebrow">{{ coll.title }}</span>
+        <h3>{{ first.title }}</h3>
+        <div class="excerpt">
+          {{ parts[0] }}</p>
+          {{ parts[1] }}</p>
+        </div>
+        <span class="continue">Continue reading →</span>
+      </div>
+    </a>
+  </section>
+
+  <div class="wrap">
+    <span class="ornament" aria-hidden="true"></span>
+    <!-- COLLECTIONS: one <a class="collection-link"> per collection -->
+    <a class="collection-link" href="{{ '/october/' | relative_url }}">
+      <span class="collection-title">{{ coll.title }}</span>
+      <span class="collection-sub">{{ coll.subtitle }}</span>
+      <span class="more">Full collection →</span>
+    </a>
+  </div>
+</main>

@@ -1,0 +1,38 @@
+# ---------------------------------------------------------------
+# Site settings. GitHub reads this file when it builds the site.
+# After editing it, give GitHub a minute or two to rebuild.
+# ---------------------------------------------------------------
+
+title: The Cafe Between
+description: Short stories that might or might not have happened.
+author: Anastasiia Khmara
+
+# The address of the site. baseurl must match the repo name exactly.
+url: "https://anastasiiakhmara-commits.github.io"
+baseurl: "/Cafe-between"
+
+markdown: kramdown
+
+# Each collection of stories is a folder whose name starts with "_".
+# To add a new collection later, copy the "october" block, rename it,
+# and create a matching _foldername and foldername/index.html.
+collections:
+  october:
+    output: true
+    permalink: /october/:name.html
+    title: October Stories
+    subtitle: 10 days of an October
+    note: More October stories are on their way.
+
+# Every story in a collection uses the story page template
+defaults:
+  - scope:
+      path: ""
+      type: october
+    values:
+      layout: story
+
+# Files that are for you, not for readers
+exclude:
+  - HOW-TO.md
+  - README.md

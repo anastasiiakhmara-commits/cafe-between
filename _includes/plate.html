@@ -1,0 +1,11 @@
+{%- comment -%}
+  An illustration as a "tipped-in plate". Shows the story's image if its
+  front matter has one, otherwise an empty placeholder.
+{%- endcomment -%}
+<figure class="plate">
+  {%- if include.doc.image %}
+  <img src="{{ '/images/' | append: include.doc.image | relative_url }}" alt="{{ include.doc.image_alt | escape }}">
+  {%- else %}
+  <div class="plate-empty">Illustration to come</div>
+  {%- endif %}
+</figure>

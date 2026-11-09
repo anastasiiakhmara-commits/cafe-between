@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{%- if page.title %}
+<title>{{ page.title }} · {{ site.title }}</title>
+{%- else %}
+<title>{{ site.title }}</title>
+{%- endif %}
+{%- assign desc = page.excerpt | default: site.description | strip_html | strip | truncatewords: 40 %}
+<meta name="description" content="{{ desc | escape }}">
+<meta property="og:title" content="{{ page.title | default: site.title | escape }}">
+<meta property="og:description" content="{{ desc | escape }}">
+{%- if page.image %}
+<meta property="og:image" content="{{ '/images/' | append: page.image | absolute_url }}">
+{%- endif %}
+<link rel="stylesheet" href="{{ '/styles/main.css' | relative_url }}">
+<script src="{{ '/scripts/site.js' | relative_url }}" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="bar">
+    <!-- Future links (About, other collections) go inside this <nav> -->
+    <nav class="bar-links" aria-label="Site">
+      <a href="{{ '/' | relative_url }}" aria-label="Home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></svg></a>
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode"></button>
+  </div>
+</header>
+
+{{ content }}
+
+<footer class="site-footer">
+  <span class="ornament" aria-hidden="true"></span>
+  <p>{{ site.title }} · stories and sketchbook drawings by {{ site.author }} · © 2026</p>
+</footer>
+</body>
+</html>
