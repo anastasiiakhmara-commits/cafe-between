@@ -5,7 +5,7 @@ After every change (a "commit"), GitHub rebuilds the site. Wait a minute or
 two, then refresh the live page. To follow a rebuild, open the **Actions** tab:
 a green tick means it's live, a red cross means something broke (see the end).
 
-Live site: https://anastasiiakhmara-commits.github.io/Cafe-between/
+Live site: https://anastasiiakhmara-commits.github.io/cafe-between/
 
 ---
 

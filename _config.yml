@@ -9,7 +9,7 @@ author: Anastasiia Khmara
 
 # The address of the site. baseurl must match the repo name exactly.
 url: "https://anastasiiakhmara-commits.github.io"
-baseurl: "/Cafe-between"
+baseurl: "/cafe-between"
 
 markdown: kramdown
 
